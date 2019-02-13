@@ -3,18 +3,20 @@ import AVFoundation
 
 public final class ImageViewerController: UIViewController {
     @IBOutlet fileprivate var scrollView: UIScrollView!
-    @IBOutlet fileprivate var imageView: UIImageView!
+    @IBOutlet var imageView: UIImageView!
     @IBOutlet fileprivate var activityIndicator: UIActivityIndicatorView!
     
     fileprivate var transitionHandler: ImageViewerTransitioningHandler?
     fileprivate let configuration: ImageViewerConfiguration?
+    var backgroundColor: UIColor!
     
     public override var prefersStatusBarHidden: Bool {
         return true
     }
     
-    public init(configuration: ImageViewerConfiguration?) {
+    public init(configuration: ImageViewerConfiguration?, backgroundColor: UIColor? = UIColor.black) {
         self.configuration = configuration
+        self.backgroundColor = backgroundColor
         super.init(nibName: String(describing: type(of: self)), bundle: Bundle(for: type(of: self)))
         
         modalPresentationStyle = .overFullScreen
@@ -29,6 +31,8 @@ public final class ImageViewerController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         imageView.image = configuration?.imageView?.image ?? configuration?.image
+        view.backgroundColor = backgroundColor
+        scrollView.backgroundColor = backgroundColor
         
         setupScrollView()
         setupGestureRecognizers()
